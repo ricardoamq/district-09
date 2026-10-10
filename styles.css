@@ -536,11 +536,6 @@ h1, h2 {
   color: #111;
 }
 
-.badge.sold {
-  background: #111;
-  color: var(--text);
-}
-
 .add-btn {
   position: absolute;
   left: 12px;
@@ -581,10 +576,6 @@ h1, h2 {
 
 .image-four {
   background-image: linear-gradient(145deg, #2a2a2a, #0d0d0d 65%);
-}
-
-.sold-out {
-  opacity: 0.72;
 }
 
 .product h3 {

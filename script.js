@@ -22,7 +22,7 @@
 
   // Número comercial: código de país + número, sin +, espacios ni guiones.
   const WHATSAPP_NUMBER = '593980927148';
-  // Único dominio de destino permitido para los enlaces de pedido.
+  // Único dominio de destino permitido para los enlaces de WhatsApp.
   const WHATSAPP_ORIGIN = 'https://wa.me';
 
   const LIMITS = Object.freeze({
@@ -40,10 +40,10 @@
 
   // Fuente única de verdad de productos. Precios en dólares (máx. 2 decimales).
   const RAW_CATALOG = [
-    { id: 'essential', name: 'Oversized Essential', description: 'Camiseta negra · Algodón', price: 22, comparePrice: 28, sizes: SIZE_OPTIONS, soldOut: false },
-    { id: 'concrete',  name: 'Concrete Tee',        description: 'Camiseta gráfica · Gris',  price: 25,                    sizes: SIZE_OPTIONS, soldOut: false },
-    { id: 'hoodie',    name: 'Urban Hoodie',        description: 'Sudadera · Negro lavado',  price: 38, comparePrice: 45, sizes: SIZE_OPTIONS, soldOut: false },
-    { id: 'cargo',     name: 'Night Cargo',         description: 'Pantalón cargo · Negro',   price: 42,                    sizes: SIZE_OPTIONS, soldOut: true },
+    { id: 'essential', name: 'Oversized Essential', description: 'Camiseta negra · Algodón', price: 22, comparePrice: 28, sizes: SIZE_OPTIONS },
+    { id: 'concrete',  name: 'Concrete Tee',        description: 'Camiseta gráfica · Gris',  price: 25,                    sizes: SIZE_OPTIONS },
+    { id: 'hoodie',    name: 'Urban Hoodie',        description: 'Sudadera · Negro lavado',  price: 38, comparePrice: 45, sizes: SIZE_OPTIONS },
+    { id: 'cargo',     name: 'Night Cargo',         description: 'Pantalón cargo · Negro',   price: 42,                    sizes: SIZE_OPTIONS },
   ];
 
   /* ------------------------------------------------------------------ */
@@ -92,7 +92,7 @@
   // Devuelve un producto validado e inmutable, o null si los datos no son fiables.
   function validateProduct(raw, seenIds) {
     if (!raw || typeof raw !== 'object') return null;
-    const { id, name, description, price, comparePrice, sizes, soldOut } = raw;
+    const { id, name, description, price, comparePrice, sizes } = raw;
     if (typeof id !== 'string' || !ID_PATTERN.test(id) || seenIds.has(id)) return null;
     if (!isCleanText(name, 80) || !isCleanText(description, 120)) return null;
     const priceCents = toCents(price);
@@ -105,11 +105,10 @@
     if (!Array.isArray(sizes) || sizes.length === 0 ||
         new Set(sizes).size !== sizes.length ||
         !sizes.every((size) => SIZE_OPTIONS.includes(size))) return null;
-    if (typeof soldOut !== 'boolean') return null;
     seenIds.add(id);
     return Object.freeze({
       id, name, description, priceCents, compareCents,
-      sizes: Object.freeze([...sizes]), soldOut,
+      sizes: Object.freeze([...sizes]),
       searchText: normalizeText(`${name} ${description}`),
     });
   }
@@ -193,7 +192,7 @@
     const lines = [];
     for (const [key, line] of [...cart]) {
       const product = catalog.get(line.id);
-      if (!product || product.soldOut || !product.sizes.includes(line.size) ||
+      if (!product || !product.sizes.includes(line.size) ||
           !isValidQty(line.qty) || key !== lineKey(line.id, line.size)) {
         cart.delete(key);
         continue;
@@ -262,14 +261,15 @@
   function buildOrderMessage(lines) {
     const { units, cents } = totals(lines);
     return [
-      '¡Hola, DISTRICT 09! Quiero realizar este pedido:',
+      '¡Hola, DISTRICT 09! Quiero consultar la disponibilidad de estas prendas:',
       '',
       ...lines.map((line) =>
         `• ${line.product.name} | Talla: ${line.size} | Cantidad: ${line.qty} | Unitario: ${money(line.product.priceCents)} | Subtotal: ${money(line.subtotal)}`),
       '',
-      `*TOTAL DE PRENDAS: ${units}*`,
-      `*TOTAL DEL PEDIDO: ${money(cents)}*`,
+      `*PRENDAS: ${units}*`,
+      `*SUBTOTAL ESTIMADO: ${money(cents)}*`,
       '',
+      'Entiendo que no es un pedido confirmado y que el subtotal no incluye envío.',
       '¿Me confirman disponibilidad, costo de envío y forma de pago?',
       'Nombre:',
       'Ciudad/sector:',
@@ -426,8 +426,7 @@
   function addToCart(productId, size) {
     const product = catalog.get(productId);
     if (!product) { showToast('No pudimos agregar esta prenda.'); return false; }
-    if (product.soldOut) { showToast('Esta prenda está agotada.'); return false; }
-    if (!product.sizes.includes(size)) { showToast('Selecciona una talla válida.'); return false; }
+    if (!product.sizes.includes(size)) { showToast('Elige una talla antes de agregar.'); return false; }
 
     const key = lineKey(product.id, size);
     const current = cart.get(key);
@@ -495,7 +494,6 @@
         heading.replaceChildren(titleButton);
       }
       card.querySelector('.product-desc')?.replaceChildren(product.description);
-      card.classList.toggle('sold-out', product.soldOut);
       syncBadge(card, product);
 
       const price = card.querySelector('.price');
@@ -509,20 +507,21 @@
 
       bindQuickView(card, product);
 
-      if (product.soldOut) { addButton?.remove(); return; }
       if (!addButton) return;
 
       const label = h('label', 'size-picker');
       label.append(h('span', '', 'Talla'));
       const select = h('select', 'product-size');
       select.setAttribute('aria-label', `Seleccionar talla de ${product.name}`);
+      const placeholder = h('option', '', 'Elegir talla');
+      placeholder.value = '';
+      select.append(placeholder);
       product.sizes.forEach((size) => {
         const option = h('option', '', size);
         option.value = size;
         select.append(option);
       });
       label.append(select);
-      if (product.sizes.includes('M')) select.value = 'M';
       card.querySelector('.product-desc')?.after(label);
 
       addButton.setAttribute('aria-label', `Agregar ${product.name} al carrito`);
@@ -535,11 +534,7 @@
     const box = card.querySelector('.product-image');
     if (!box) return;
     let badge = box.querySelector('.badge');
-    if (product.soldOut) {
-      if (!badge) { badge = h('span', 'badge'); box.prepend(badge); }
-      badge.className = 'badge sold';
-      badge.textContent = 'Agotado';
-    } else if (product.compareCents) {
+    if (product.compareCents) {
       if (!badge) { badge = h('span', 'badge'); box.prepend(badge); }
       badge.className = 'badge sale';
       badge.textContent = 'Oferta';
@@ -580,20 +575,17 @@
     }
 
     dom.pmSize.replaceChildren();
+    const sizePlaceholder = h('option', '', 'Elegir talla');
+    sizePlaceholder.value = '';
+    dom.pmSize.append(sizePlaceholder);
     product.sizes.forEach((size) => {
       const option = h('option', '', size);
       option.value = size;
       dom.pmSize.append(option);
     });
-    if (product.sizes.includes('M')) dom.pmSize.value = 'M';
 
-    if (product.soldOut) {
-      dom.pmAdd.disabled = true;
-      dom.pmAdd.replaceChildren('AGOTADO');
-    } else {
-      dom.pmAdd.disabled = false;
-      dom.pmAdd.replaceChildren('AGREGAR AL CARRITO ↗');
-    }
+    dom.pmAdd.disabled = false;
+    dom.pmAdd.replaceChildren('AÑADIR AL CARRITO ↗');
 
     openPanel(dom.productModal, trigger);
   }
@@ -625,7 +617,7 @@
       button.type = 'button';
       button.dataset.id = product.id;
       button.append(
-        h('span', '', product.soldOut ? `${product.name} · Agotado` : product.name),
+        h('span', '', product.name),
         h('small', '', money(product.priceCents)),
       );
       dom.searchResults.append(button);
@@ -640,7 +632,6 @@
     if (!card) return;
     closeAll();
     card.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'center' });
-    if (product.soldOut) return;
     clearTimeout(highlightTimers.get(id));
     card.classList.add('product-highlight');
     highlightTimers.set(id, setTimeout(() => card.classList.remove('product-highlight'), 1400));
