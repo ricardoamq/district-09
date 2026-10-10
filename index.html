@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="description" content="DISTRICT 09: streetwear independiente de Ecuador. Pedidos por WhatsApp. Demo de diseño y desarrollo web.">
   <title>DISTRICT 09 | Streetwear · Demo de diseño web</title>
@@ -87,6 +87,7 @@
 
     <nav class="desktop-nav" aria-label="Principal">
       <a href="#coleccion">Colección</a>
+      <a href="#lookbook">Lookbook</a>
       <a href="#nosotros">Nosotros</a>
       <a href="#proyecto">Proyecto</a>
       <a href="#info">Info</a>
@@ -106,6 +107,7 @@
 
   <nav class="mobile-menu" id="mobile-menu" aria-label="Menú móvil" hidden>
     <a href="#coleccion">Colección</a>
+    <a href="#lookbook">Lookbook</a>
     <a href="#nosotros">Nosotros</a>
     <a href="#proyecto">Proyecto</a>
     <a href="#info">Info</a>
@@ -163,13 +165,18 @@
 
   <main id="contenido">
     <section class="hero">
-      <p class="eyebrow">STREETWEAR INDEPENDIENTE · ECUADOR</p>
-      <h1>NO SIGAS<br>LA <span>CALLE.</span></h1>
-      <p class="intro">
-        Prendas para quienes construyen su propio camino.
-        Nueva colección disponible.
-      </p>
-      <a class="button" href="#coleccion">EXPLORAR COLECCIÓN ↗</a>
+      <div class="hero-copy">
+        <p class="eyebrow">STREETWEAR INDEPENDIENTE · ECUADOR</p>
+        <h1>NO SIGAS<br>LA <span>CALLE.</span></h1>
+        <p class="intro">
+          Prendas para quienes construyen su propio camino.
+          Nueva colección disponible.
+        </p>
+        <a class="button" href="#coleccion">EXPLORAR COLECCIÓN ↗</a>
+      </div>
+      <div class="hero-media">
+        <img src="assets/hero.png" alt="Prenda destacada del DROP 001 de DISTRICT 09" width="1100" height="1300" fetchpriority="high" decoding="async">
+      </div>
     </section>
 
     <section class="collection" id="coleccion">
@@ -181,7 +188,8 @@
       <div class="products">
         <article class="product" data-id="essential">
           <div class="product-image">
-            <img class="product-photo" src="assets/products/essential.svg" alt="Camiseta Oversized Essential negra de algodón" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo" src="assets/products/essential.png" alt="Camiseta Oversized Essential negra de algodón" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo product-photo-alt" src="assets/products/essential-back.png" alt="" width="800" height="1000" loading="lazy" decoding="async">
             <span class="badge sale">Oferta</span>
             <span class="sku">01 / ESSENTIAL</span>
             <button class="add-btn" type="button">Agregar</button>
@@ -197,7 +205,8 @@
 
         <article class="product" data-id="concrete">
           <div class="product-image">
-            <img class="product-photo" src="assets/products/concrete.svg" alt="Camiseta gráfica Concrete Tee gris" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo" src="assets/products/concrete.png" alt="Camiseta gráfica Concrete Tee gris" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo product-photo-alt" src="assets/products/concrete-back.png" alt="" width="800" height="1000" loading="lazy" decoding="async">
             <span class="sku">02 / GRAPHIC</span>
             <button class="add-btn" type="button">Agregar</button>
           </div>
@@ -210,7 +219,8 @@
 
         <article class="product" data-id="hoodie">
           <div class="product-image">
-            <img class="product-photo" src="assets/products/hoodie.svg" alt="Sudadera Urban Hoodie negra lavada" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo" src="assets/products/hoodie.png" alt="Sudadera Urban Hoodie negra lavada" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo product-photo-alt" src="assets/products/hoodie-back.png" alt="" width="800" height="1000" loading="lazy" decoding="async">
             <span class="badge sale">Oferta</span>
             <span class="sku">03 / DAILY</span>
             <button class="add-btn" type="button">Agregar</button>
@@ -226,7 +236,8 @@
 
         <article class="product sold-out" data-id="cargo">
           <div class="product-image">
-            <img class="product-photo" src="assets/products/night-cargo.svg" alt="Pantalón cargo Night Cargo negro" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo" src="assets/products/night-cargo.png" alt="Pantalón cargo Night Cargo negro" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="product-photo product-photo-alt" src="assets/products/night-cargo-back.png" alt="" width="800" height="1000" loading="lazy" decoding="async">
             <span class="badge sold">Agotado</span>
             <span class="sku">04 / UTILITY</span>
           </div>
@@ -236,6 +247,22 @@
             <strong>$42.00</strong>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="lookbook" id="lookbook">
+      <div class="section-heading">
+        <p class="eyebrow">LOOKBOOK / DROP 001</p>
+        <h2>LA CALLE<br>EN <span>IMÁGENES</span></h2>
+      </div>
+
+      <div class="lookbook-grid">
+        <figure><img src="assets/lookbook/look-01.png" alt="Look 01 del DROP 001" width="900" height="1200" loading="lazy" decoding="async"><figcaption>LOOK 01</figcaption></figure>
+        <figure><img src="assets/lookbook/look-02.png" alt="Look 02 del DROP 001" width="900" height="1200" loading="lazy" decoding="async"><figcaption>LOOK 02</figcaption></figure>
+        <figure><img src="assets/lookbook/look-03.png" alt="Look 03 del DROP 001" width="900" height="1200" loading="lazy" decoding="async"><figcaption>LOOK 03</figcaption></figure>
+        <figure><img src="assets/lookbook/look-04.png" alt="Look 04 del DROP 001" width="900" height="1200" loading="lazy" decoding="async"><figcaption>LOOK 04</figcaption></figure>
+        <figure><img src="assets/lookbook/look-05.png" alt="Look 05 del DROP 001" width="900" height="1200" loading="lazy" decoding="async"><figcaption>LOOK 05</figcaption></figure>
+        <figure><img src="assets/lookbook/look-06.png" alt="Look 06 del DROP 001" width="900" height="1200" loading="lazy" decoding="async"><figcaption>LOOK 06</figcaption></figure>
       </div>
     </section>
 
@@ -371,36 +398,11 @@
     <section class="contact" id="contacto">
       <p class="eyebrow">¿TENÉS UNA MARCA O UN PROYECTO?</p>
       <h2>¿LISTO PARA TU PRÓXIMO DROP?</h2>
-      <p class="intro contact-intro">Escríbeme por WhatsApp o correo, o déjame tu mensaje. Respondo en menos de 24 h.</p>
+      <p class="intro contact-intro">Escríbeme por WhatsApp y te ayudo con tallas, disponibilidad y envíos. Respondo en menos de 24 h.</p>
 
       <div class="cta-actions">
-        <a class="button" href="mailto:hola@ejemplo.com">ESCRIBIR UN EMAIL ↗</a>
-        <a class="button button-outline whatsapp-link" href="#contacto" target="_blank" rel="noopener noreferrer">WHATSAPP ↗</a>
+        <a class="button whatsapp-link" href="#contacto" target="_blank" rel="noopener noreferrer">HABLAR POR WHATSAPP ↗</a>
       </div>
-
-      <form class="contact-form" name="contacto" method="POST" action="/gracias.html" data-netlify="true" data-netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="contacto">
-        <p class="visually-hidden">
-          <label>No rellenes este campo: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
-        </p>
-
-        <div class="field">
-          <label for="nombre">Nombre</label>
-          <input id="nombre" name="nombre" type="text" required maxlength="80" autocomplete="name">
-        </div>
-
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required maxlength="120" autocomplete="email">
-        </div>
-
-        <div class="field field-wide">
-          <label for="mensaje">Mensaje</label>
-          <textarea id="mensaje" name="mensaje" rows="5" required maxlength="1000"></textarea>
-        </div>
-
-        <button class="button" type="submit">ENVIAR MENSAJE ↗</button>
-      </form>
 
       <p class="note">Marca conceptual creada como proyecto de demostración.</p>
     </section>

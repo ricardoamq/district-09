@@ -13,6 +13,9 @@
 (() => {
   'use strict';
 
+  // Marca el documento como "con JS" para habilitar las animaciones de entrada.
+  document.documentElement.classList.add('js');
+
   /* ------------------------------------------------------------------ */
   /* Configuración                                                      */
   /* ------------------------------------------------------------------ */
@@ -559,7 +562,7 @@
     if (!product || !card) return;
     currentQuickView = product;
 
-    const photo = card.querySelector('.product-photo');
+    const photo = card.querySelector('.product-photo:not(.product-photo-alt)');
     if (photo) {
       dom.pmPhoto.src = photo.currentSrc || photo.src;
       dom.pmPhoto.alt = photo.alt;
@@ -720,6 +723,66 @@
   });
 
   /* ------------------------------------------------------------------ */
+  /* Animaciones de aparición al hacer scroll                           */
+  /* ------------------------------------------------------------------ */
+
+  const REVEAL_SELECTOR = [
+    '.section-heading',
+    '.product',
+    '.features article',
+    '.info-grid article',
+    '.lookbook figure',
+    '.skills',
+    '.about h2',
+    '.project-actions',
+    '.drop-cta > *',
+    '.contact > *',
+  ].join(', ');
+
+  function setupReveal() {
+    const targets = [...document.querySelectorAll(REVEAL_SELECTOR)];
+    if (!targets.length) return;
+    targets.forEach((el) => el.setAttribute('data-reveal', ''));
+
+    // Sin animaciones si el sistema pide menos movimiento.
+    if (reducedMotion.matches) {
+      targets.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    let observer = null;
+    const reveal = (el) => {
+      el.classList.add('is-visible');
+      if (observer) observer.unobserve(el);
+    };
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) reveal(entry.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      targets.forEach((el) => observer.observe(el));
+    }
+
+    // Refuerzo: revela lo que ya está en pantalla aunque el observer no dispare.
+    const inView = (el) => {
+      const rect = el.getBoundingClientRect();
+      const h = window.innerHeight || document.documentElement.clientHeight;
+      return rect.top < h && rect.bottom > 0;
+    };
+    const sweep = () => {
+      targets.forEach((el) => {
+        if (!el.classList.contains('is-visible') && inView(el)) reveal(el);
+      });
+    };
+    sweep();
+    window.addEventListener('scroll', sweep, { passive: true });
+    window.addEventListener('resize', sweep, { passive: true });
+    window.setTimeout(sweep, 1200);
+  }
+
+  /* ------------------------------------------------------------------ */
   /* Inicio                                                             */
   /* ------------------------------------------------------------------ */
 
@@ -727,4 +790,5 @@
   loadCart();
   renderCart();
   bindGeneralWhatsAppLinks();
+  setupReveal();
 })();
