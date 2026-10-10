@@ -280,8 +280,11 @@
   const GENERAL_MESSAGE = '¡Hola, DISTRICT 09! Quisiera recibir información sobre sus prendas y disponibilidad.';
 
   function bindGeneralWhatsAppLinks() {
-    const url = buildWhatsAppUrl(GENERAL_MESSAGE);
+    const defaultUrl = buildWhatsAppUrl(GENERAL_MESSAGE);
     document.querySelectorAll('.whatsapp-link').forEach((link) => {
+      const url = link.dataset.waMessage
+        ? buildWhatsAppUrl(link.dataset.waMessage)
+        : defaultUrl;
       if (url) {
         link.setAttribute('href', url);
         link.setAttribute('target', '_blank');
@@ -292,7 +295,7 @@
         link.removeAttribute('href');
       }
     });
-    if (!url) console.error('[DISTRICT 09] WHATSAPP_NUMBER no tiene un formato válido (8–15 dígitos, sin +).');
+    if (!defaultUrl) console.error('[DISTRICT 09] WHATSAPP_NUMBER no tiene un formato válido (8–15 dígitos, sin +).');
   }
 
   /* ------------------------------------------------------------------ */
@@ -723,9 +726,7 @@
     '.features article',
     '.info-grid article',
     '.lookbook figure',
-    '.skills',
     '.about h2',
-    '.project-actions',
     '.drop-cta > *',
     '.contact > *',
   ].join(', ');

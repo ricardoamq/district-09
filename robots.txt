@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://district-09.example.com/sitemap.xml
+Sitemap: https://district-09.netlify.app/sitemap.xml

@@ -71,6 +71,10 @@ No hay `package.json`, ni dependencias, ni tests automatizados. No añadas un
 - No afirmar envío gratis, disponibilidad ni plazos que no se puedan cumplir. Los
   claims de envío deben ser coherentes entre marquee, features y FAQ.
 - El número de WhatsApp vive en `WHATSAPP_NUMBER` (`script.js`).
+- La página es una **demo de tienda** (marca ficticia) que se muestra a marcas
+  potenciales. Debe leerse como una tienda real: no reintroducir secciones de
+  portafolio/servicios dentro de ella. La firma del autor va solo en el badge
+  DEMO (con `data-wa-message`) y en el footer.
 
 ## Idioma y tono
 - Español (Ecuador). Tuteo ("tienes", no "tenés"). Evitar "usted" y regionalismos

@@ -562,22 +562,6 @@ h1, h2 {
   transform: translateY(0);
 }
 
-.image-one {
-  background-image: linear-gradient(145deg, #414141, #171717 65%);
-}
-
-.image-two {
-  background-image: linear-gradient(145deg, #777, #343434 65%);
-}
-
-.image-three {
-  background-image: linear-gradient(145deg, #353535, #101010 65%);
-}
-
-.image-four {
-  background-image: linear-gradient(145deg, #2a2a2a, #0d0d0d 65%);
-}
-
 .product h3 {
   font-size: 14px;
   margin-top: 17px;
@@ -1003,39 +987,6 @@ select:focus-visible {
   opacity: 0.55;
   cursor: not-allowed;
   transform: none;
-}
-
-/* ------------------------------------------------------------------ */
-/* Proyecto / portafolio                                               */
-/* ------------------------------------------------------------------ */
-.about.project {
-  border-top: 1px solid #303030;
-}
-.skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 34px;
-}
-.skills span {
-  border: 1px solid #3a3a3a;
-  background: #141414;
-  color: var(--text);
-  padding: 8px 12px;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-}
-.project-actions {
-  justify-content: flex-start;
-  margin-top: 34px;
-}
-.author-credit {
-  margin-top: 30px;
-  color: var(--muted);
-  font-size: 12px;
-}
-.author-credit strong {
-  color: var(--accent);
 }
 
 /* ------------------------------------------------------------------ */
