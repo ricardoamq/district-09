@@ -8,6 +8,30 @@ tienda. La firma del autor vive en el badge DEMO y en el footer.
 > **Estado:** tienda de demostración con marca ficticia. No se muestra stock ni
 > estados "agotado": la disponibilidad se confirma por WhatsApp.
 
+🟢 **Demo en vivo / Live demo:** https://district-09.netlify.app/
+
+<details>
+<summary><b>🌐 English</b></summary>
+
+A dependency-free **static storefront demo** (no backend) for an independent
+streetwear brand: product catalog, search, product detail, a persistent cart
+(`localStorage`) and WhatsApp order hand-off. It works as a **product demo**:
+a brand can see how its own shop could look. The author's signature lives in
+the DEMO badge and the footer.
+
+- **Stack:** semantic HTML, plain CSS (custom properties, `prefers-reduced-motion`,
+  responsive, entrance animations), vanilla JavaScript in an IIFE, CSP headers.
+- **No stock states:** availability is always confirmed over WhatsApp.
+
+</details>
+
+## Capturas / Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/home.png" alt="Home page of DISTRICT 09 with the DROP 001 hero campaign" width="48%" />
+  <img src="assets/screenshots/carrito.png" alt="DISTRICT 09 catalog with the cart drawer open, subtotal and WhatsApp availability button" width="48%" />
+</p>
+
 ## Stack
 
 - HTML semántico + CSP (meta y cabeceras).
